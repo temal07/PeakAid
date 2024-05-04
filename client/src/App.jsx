@@ -9,10 +9,14 @@ import Food from './pages/Food';
 import Blog from './pages/Blog';
 import Sleep from './pages/Sleep';
 import Activities from './pages/Activities';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import CreateBlog from './pages/CreateBlog';
 
 export default function App() {
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/sign-in' element={<SignIn/>} />
@@ -22,9 +26,11 @@ export default function App() {
           <Route path='food' element={<Food />} />
         </Route>
         <Route path='/blog/:id' element={<Blog />} />
+        <Route path='/create-blog' element={<CreateBlog />} />
         <Route path='/sleep' element={<Sleep />} />
         <Route path='/activities' element={<Activities />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   )
 }
