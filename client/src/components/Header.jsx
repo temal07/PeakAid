@@ -27,7 +27,7 @@ export default function Header() {
         {/* Signin button */}
         <div className='flex gap-2 md:order-2'>
           <Link to='/sign-in'>
-            <Button gradientDuoTone='greenToBlue'>
+            <Button gradientDuoTone='greenToBlue' outline>
               Sign In
             </Button>
           </Link>
