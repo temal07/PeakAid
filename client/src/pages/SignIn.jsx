@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button, Alert, TextInput, Label, Spinner } from "flowbite-react";
 import { signInFailure, signInStart, signInSuccess } from "../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import OAuth from "../components/OAuth";
 
 export default function SignIn() {
     /*
@@ -70,9 +71,7 @@ export default function SignIn() {
             <div className='flex p-5 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5 '>
                 {/* left side includes the logo */}
                 <div className='flex-1'>
-                    <Link to='/' className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold text-white">
-                        <span className='px-4 py-2 bg-gradient-to-r from-blue-800 to-blue-500 rounded-lg'>PeakAid</span>
-                    </Link>
+                    <span className='px-4 py-2 bg-gradient-to-r from-blue-800 to-blue-500 rounded-lg self-center whitespace-nowrap text-sm sm:text-xl font-semibold text-white'>PeakAid</span>
                     <p className='text-sm mt-6'>
                         Signin with your email and password or Google
                     </p>
@@ -109,6 +108,7 @@ export default function SignIn() {
                             ) : 'Create an Account'
                         }
                         </Button>
+                        <OAuth />
                     </form>
                     <div className="flex gap-4 border-t-2">
                         <span>Don't have an account?</span>

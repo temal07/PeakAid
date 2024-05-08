@@ -89,3 +89,62 @@ export const signin = async (req, res, next) => {
         next(error);
     }
 }
+
+export const google = async (req, res, next) => {
+    const { email, name, googlePhotoUrl } = req.body;
+
+    try {
+        // check if the user exists
+        const user = await User.findOne({ email });
+
+        //
+        if (user) {
+            // generate a token if the user exists
+            const token = jwt.sign({id: user._id}, process.env.JWT_TOKEN);
+            const { password, ...rest } = user._doc;
+
+            // set the cookie without sending the password
+            res.status(200).cookie('access_token', token, {
+                httpOnly: true,
+            }).json(rest);
+        } else {
+            /* 
+                if the user doesn't exist
+                create a new one
+            */
+            // before creating, create a random password 
+            // because we are using auto-authentication
+            // which means we don't enter a password
+            // during login/registering process.
+
+            // However, since our model requires a password,
+            // we're going to generate a random one.
+            
+            // Math.random = generates a num between 0 and 1
+            // toString(36) converts numbers to base-36 which is
+            // [0-9, A-Z]
+            // .slice(-8) only gets the last 8 characters of the password
+            // since the password starts with "0."
+            const randomGeneratedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+            // encrypt the password
+            const hashedPassword = bcryptjs.hashSync(randomGeneratedPassword, 10);
+
+            const newUser = new User({
+                username: name.toLowerCase().split(' ').join('') + Math.random().toString(9).slice(-4),
+                email,
+                password: hashedPassword,
+                profilePicture: googlePhotoUrl,
+            });
+            await newUser.save();
+
+            // generate the token for the new user
+            const token = jwt.sign({ id: newUser._id }, process.env.JWT_TOKEN);
+            const { password, ...rest } = newUser._doc;
+            res.status(200).cookie('access_token', token, {
+                httpOnly: true,
+            }).json(rest);
+        }
+    } catch (error) {
+        next(error);
+    }
+}

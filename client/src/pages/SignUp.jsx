@@ -1,6 +1,7 @@
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import OAuth from '../components/OAuth';
 
 export default function SignUp() {
   // necessary states and a naviagtion function
@@ -66,9 +67,7 @@ export default function SignUp() {
       <div className='flex p-5 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5 '>
         {/* left side includes the logo */}
         <div className='flex-1'>
-          <Link to='/' className="self-center whitespace-nowrap text-sm sm:text-xl font-semibold text-white">
-            <span className='px-4 py-2 bg-gradient-to-r from-blue-800 to-blue-500 rounded-lg'>PeakAid</span>
-          </Link>
+          <span className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold text-white px-4 py-2 bg-gradient-to-r from-blue-800 to-blue-500 rounded-lg'>PeakAid</span>
           <p className='text-sm mt-6'>
             Signup with your email and password or Google
           </p>
@@ -112,6 +111,7 @@ export default function SignUp() {
                 ) : 'Create an Account'
               }
             </Button>
+            <OAuth />
           </form>
           <div className="flex gap-4 border-t-2">
             <span>Have an account?</span>
