@@ -22,7 +22,6 @@ export default function OAuth() {
     try {
       // get the results from google
       const resultsFromGoogle = await signInWithPopup(auth, provider);
-      
       // get the response from Google
       const res = await fetch('/api/auth/google', {
         method: 'POST',
@@ -31,11 +30,11 @@ export default function OAuth() {
           // get NECESSARY information
           name: resultsFromGoogle.user.displayName,
           email: resultsFromGoogle.user.email,
-          googlePhotoURL: resultsFromGoogle.user.photoURL,
+          googlePhotoUrl: resultsFromGoogle.user.photoURL,
         })
       });
       // set the data
-      const data = res.json();
+      const data = await res.json();
       // if the data is OK, we want to call signInWithSuccess function from the redux
       // by using the dispatch method
       if(res.ok) {

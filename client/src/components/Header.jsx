@@ -1,10 +1,15 @@
 import React from 'react'
-import { Navbar, TextInput, Button } from 'flowbite-react'
+import { Navbar, TextInput, Button, Dropdown, Avatar, DropdownDivider } from 'flowbite-react'
 import { Link, useLocation } from 'react-router-dom'
 import { AiOutlineSearch } from 'react-icons/ai';
+import { useSelector } from 'react-redux';
 
 export default function Header() {
   const path = useLocation().pathname;
+  // get the current user to update the header
+  // if the user is logged in already, change the header.
+
+  const { currentUser } = useSelector(state => state.user);
 
   return (
     <Navbar className="border-b-2">
@@ -27,16 +32,39 @@ export default function Header() {
         {/* Signin button */}
         <div className='flex gap-2 md:order-2'>
           <div className='flex gap-3'>
-            <Link to='/sign-up'>
-              <Button gradientMonochrome='cyan' outline>
-                Sign Up
-              </Button>
-            </Link>
-            <Link to='/sign-in'>
-              <Button gradientDuoTone='greenToBlue' outline>
-                Sign In
-              </Button>
-            </Link>
+            { 
+              currentUser ? (
+                <Dropdown
+                  arrowIcon={false}
+                  inline
+                  label={
+                    <Avatar alt='user' img={currentUser.profilePicture} rounded />
+                  }
+                >
+                  <Dropdown.Header>
+                    <span className='block text-sm'>Username: {currentUser.username}</span>
+                    <span className='block text-sm font-medium truncate'>Email: {currentUser.email}</span>
+                  </Dropdown.Header>
+                  <Link to={'/profile'}>
+                    <Dropdown.Item>Profile</Dropdown.Item>
+                  </Link>
+                  <Dropdown.Divider />
+                  <Dropdown.Item>Log Out</Dropdown.Item>
+                </Dropdown>
+              ) : 
+              <>
+              <Link to='/sign-up'>
+                <Button gradientMonochrome='cyan' outline>
+                  Sign Up
+                </Button>
+              </Link>
+                <Link to='/sign-in'>
+                  <Button gradientDuoTone='greenToBlue' outline>
+                    Sign In
+                  </Button>
+                </Link>
+              </>
+            }
           </div>
           <Navbar.Toggle />
         </div>

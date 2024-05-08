@@ -92,6 +92,7 @@ export const signin = async (req, res, next) => {
 
 export const google = async (req, res, next) => {
     const { email, name, googlePhotoUrl } = req.body;
+    console.log(`type of google photo url: ${typeof googlePhotoUrl}`);
 
     try {
         // check if the user exists
@@ -99,6 +100,11 @@ export const google = async (req, res, next) => {
 
         //
         if (user) {
+            // show the google photo regardless of whether the user signed in
+            // or signed up.
+            user.profilePicture = googlePhotoUrl;
+            await user.save();
+
             // generate a token if the user exists
             const token = jwt.sign({id: user._id}, process.env.JWT_TOKEN);
             const { password, ...rest } = user._doc;
