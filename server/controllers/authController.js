@@ -92,7 +92,6 @@ export const signin = async (req, res, next) => {
 
 export const google = async (req, res, next) => {
     const { email, name, googlePhotoUrl } = req.body;
-    console.log(`type of google photo url: ${typeof googlePhotoUrl}`);
 
     try {
         // check if the user exists

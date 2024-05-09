@@ -1,4 +1,5 @@
 const flowbite = require('flowbite-react/tailwind');
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -8,7 +9,11 @@ export default {
     flowbite.content(),
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'radio-canada-big': ['Radio Canada Big', ...defaultTheme.fontFamily.sans]
+      }
+    },
   },
   plugins: [flowbite.plugin()],
 }

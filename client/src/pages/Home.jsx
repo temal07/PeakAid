@@ -1,9 +1,20 @@
-import React from 'react'
+import React from 'react';
+import { useSelector } from 'react-redux';
+import Blog from './Blog';
+import Welcome from './Welcome';
 
 export default function Home() {
+  const { currentUser } = useSelector(state => state.user);
+
   return (
-    <div>
-      <p>Home page</p>
+    <div className=''>
+      {
+        currentUser ? (
+            <Blog />
+        ) : (
+          <Welcome />
+        )
+      }
     </div>
   )
 }

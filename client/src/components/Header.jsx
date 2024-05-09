@@ -68,28 +68,31 @@ export default function Header() {
           </div>
           <Navbar.Toggle />
         </div>
-        <Navbar.Collapse>
-          <Navbar.Link active={path ==="/"} as={'div'}>
-              <Link to='/'>
-                Home
-              </Link>
-          </Navbar.Link>
-          <Navbar.Link active={path ==="/nutritions"} as={'div'}>
-              <Link to='/nutritions'>
-                Nutritions
-              </Link>
-          </Navbar.Link>
-          <Navbar.Link active={path ==="/activities"} as={'div'}>
-              <Link to='/activities'>
-                Activities
-              </Link>
-          </Navbar.Link>
-          <Navbar.Link active={path==='/create-blog'} as={'div'}>
-              <Link to='create-blog'>
-                Create Blog
-              </Link>
-          </Navbar.Link>
-        </Navbar.Collapse>
+        {
+          currentUser && 
+          <Navbar.Collapse>
+            <Navbar.Link active={path ==="/"} as={'div'}>
+                <Link to='/'>
+                  Home
+                </Link>
+            </Navbar.Link>
+            <Navbar.Link active={path ==="/nutritions"} as={'div'}>
+                <Link to='/nutritions'>
+                  Nutritions
+                </Link>
+            </Navbar.Link>
+            <Navbar.Link active={path ==="/activities"} as={'div'}>
+                <Link to='/activities'>
+                  Activities
+                </Link>
+            </Navbar.Link>
+            <Navbar.Link active={path==='/create-blog'} as={'div'}>
+                <Link to='create-blog'>
+                  Create Blog
+                </Link>
+            </Navbar.Link>
+          </Navbar.Collapse>
+        }
     </Navbar>
   )
 }
