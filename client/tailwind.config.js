@@ -12,6 +12,12 @@ export default {
     extend: {
       fontFamily: {
         'radio-canada-big': ['Radio Canada Big', ...defaultTheme.fontFamily.sans]
+      },
+      maxHeight: {
+        '80': '20rem'
+      },
+      maxWidth: {
+        '80': '20rem'
       }
     },
   },

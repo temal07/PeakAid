@@ -26,7 +26,6 @@ export default function Welcome() {
             <li className='mb-2'>Create your own blogs</li>
             <li className='mb-2'>Read other people's blogs</li>
             <li className='mb-2'>Keep track of your exercises</li>
-            <li>Keep track of your sleep</li>
             </ul>
         </div>
         </div>
