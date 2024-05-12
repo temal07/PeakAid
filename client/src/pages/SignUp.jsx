@@ -64,7 +64,7 @@ export default function SignUp() {
 
   return (
     <div className='min-h-screen mt-20'>
-      <div className='flex p-5 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5 '>
+      <div className='flex p-5 max-w-3xl flex-col gap-5'>
         {/* left side includes the logo */}
         <div className='flex-1'>
           <span className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold text-white px-4 py-2 bg-gradient-to-r from-blue-800 to-blue-500 rounded-lg'>PeakAid</span>

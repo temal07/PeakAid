@@ -87,8 +87,13 @@ export default function Header() {
                 </Link>
             </Navbar.Link>
             <Navbar.Link active={path==='/create-blog'} as={'div'}>
-                <Link to='create-blog'>
+                <Link to='/create-blog'>
                   Create Blog
+                </Link>
+            </Navbar.Link>
+            <Navbar.Link active={path==='/create-plan'} as={'div'}>
+                <Link to='/create-plan'>
+                  Create Weekly Plan
                 </Link>
             </Navbar.Link>
           </Navbar.Collapse>

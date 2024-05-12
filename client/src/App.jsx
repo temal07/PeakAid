@@ -11,6 +11,7 @@ import Activities from './pages/Activities';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CreateBlog from './pages/CreateBlog';
+import CreatePlan from './pages/CreatePlan';
 import Profile from './pages/Profile';
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
         </Route>
         <Route path='/blog/:id' element={<Blog />} />
         <Route path='/create-blog' element={<CreateBlog />} />
+        <Route path='/create-plan' element={<CreatePlan />} />
         <Route path='/activities:id' element={<Activities />} />
       </Routes>
       <Footer />
