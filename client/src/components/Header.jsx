@@ -1,15 +1,37 @@
 import React from 'react'
 import { Navbar, TextInput, Button, Dropdown, Avatar, DropdownDivider } from 'flowbite-react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AiOutlineSearch } from 'react-icons/ai';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { signOutSuccess } from '../redux/user/userSlice.js';
 
 export default function Header() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const path = useLocation().pathname;
   // get the current user to update the header
   // if the user is logged in already, change the header.
 
   const { currentUser } = useSelector(state => state.user);
+
+  const handleSignOut = async () => {
+    try {
+      const res = await fetch('/api/user/signout', {
+        method: 'POST',
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        navigate('/');
+        dispatch(signOutSuccess());
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   return (
     <Navbar className="border-b-2">
@@ -49,7 +71,7 @@ export default function Header() {
                     <Dropdown.Item>Profile</Dropdown.Item>
                   </Link>
                   <Dropdown.Divider />
-                  <Dropdown.Item>Log Out</Dropdown.Item>
+                  <Dropdown.Item onClick={handleSignOut}>Log Out</Dropdown.Item>
                 </Dropdown>
               ) : 
               <>

@@ -7,6 +7,48 @@ export default function CreatePlan() {
     const [isLoading, setIsLoading] = useState(false);
     // use the gemini's response
     const [responseData, setResponseData] = useState(null);
+    //saved response from gemini
+    const [savedResponse, setSavedResponse] = useState(null);
+    const [saveInstantly, setSaveInstantly] = useState(false);
+
+    const [isResponseSaved, setIsResponseSaved] = useState(false);
+    
+    const toggleSaveInstantly = () => {
+        setSaveInstantly((prevValue) => !prevValue);
+    };
+
+    const handleSaveResponse = async () => {
+        try {
+            setIsResponseSaved(false);
+            // We want to avoid the backend to save the gemini responses instantly.
+            // Therefore, we'll set a flag that is set to false and we'll access the
+            // flag in the backend. If the flag is true, then & only then the backend
+            // will save the data.
+
+            const res = await fetch('/api/generate/save-response', {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    text: responseData.message, 
+                    saveInstantly,
+                }),
+            });
+    
+            if (res.ok) {
+                const data = await res.json();
+                setSavedResponse(data);
+                setSaveInstantly(true);
+                setIsResponseSaved(true);
+                setErrorMessage(null);
+            } else {
+                setErrorMessage('Failed to save response. Please try again later.');
+                setSaveInstantly(false);
+            }
+        } catch (error) {
+            setSaveInstantly(false);
+            console.log(error);
+        }
+    }
 
     const handleChange = (e) => {
         setFormData({...formData, [e.target.id]: e.target.value.trim()});
@@ -25,7 +67,10 @@ export default function CreatePlan() {
             const res = await fetch('/api/generate/generate-plan', {
                 method: "POST",
                 headers: {"Content-Type" : "application/json"},
-                body: JSON.stringify(formData),
+                body: JSON.stringify({ 
+                    prompt: formData.prompt,
+                    saveInstantly,
+                }),
             });
             setIsLoading(false);
             // check if the res was successful
@@ -99,14 +144,27 @@ export default function CreatePlan() {
                         </>
                     }
                 </Button>
-                <div className="flex gap-4 border-t-2">
-                    {
-                        errorMessage && (
-                        <Alert className='mt-5' color='failure'>
-                            {errorMessage}
-                        </Alert>
-                        )
-                    }
+                <div className="flex flex-col gap-4 border-t-2">
+                    <div>
+                        {
+                            errorMessage && (
+                            <Alert className='mt-5' color='failure'>
+                                {errorMessage}
+                            </Alert>
+                            )
+                        }
+                    </div>
+                    <div>
+                        {
+                            isResponseSaved && (
+                                <div className="p-4">
+                                    <Alert color='success'>
+                                    {'The response has successfuly been saved!'}
+                                    </Alert>
+                                </div>
+                            )
+                        }
+                    </div>
                 </div>
             </form>
         </div>
@@ -127,8 +185,11 @@ export default function CreatePlan() {
                         {prettifyText(responseData.message)}
                     </div>
                     <div className="">
-                        <Button type='button' className='w-10 h-10 px-2 py-0 ml-2'>
-                            <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <Button onClick={() => {
+                            toggleSaveInstantly();
+                            handleSaveResponse(); 
+                        }} type='button' className='w-10 h-10 px-2 py-0 ml-2'>
+                            <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M7.833 2c-.507 0-.98.216-1.318.576A1.92 1.92 0 0 0 6 3.89V21a1 1 0 0 0 1.625.78L12 18.28l4.375 3.5A1 1 0 0 0 18 21V3.889c0-.481-.178-.954-.515-1.313A1.808 1.808 0 0 0 16.167 2H7.833Z"/>
                             </svg>
                         </Button>
@@ -136,7 +197,6 @@ export default function CreatePlan() {
                 </div>
             )}
         </div>
-
     </div>
     )
 }
