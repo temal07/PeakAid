@@ -10,9 +10,8 @@ export default function CreatePlan() {
     //saved response from gemini
     const [savedResponse, setSavedResponse] = useState(null);
     const [saveInstantly, setSaveInstantly] = useState(false);
-
     const [isResponseSaved, setIsResponseSaved] = useState(false);
-    
+
     const toggleSaveInstantly = () => {
         setSaveInstantly((prevValue) => !prevValue);
     };
@@ -148,7 +147,7 @@ export default function CreatePlan() {
                     <div>
                         {
                             errorMessage && (
-                            <Alert className='mt-5' color='failure'>
+                            <Alert className='mt-5 opacity-100 transition-opacity duration-5000' color='failure'>
                                 {errorMessage}
                             </Alert>
                             )
@@ -158,7 +157,7 @@ export default function CreatePlan() {
                         {
                             isResponseSaved && (
                                 <div className="p-4">
-                                    <Alert color='success'>
+                                    <Alert color='success' className={`opacity-100 transition-opacity duration-5000 animate-fade`}>
                                     {'The response has successfuly been saved!'}
                                     </Alert>
                                 </div>

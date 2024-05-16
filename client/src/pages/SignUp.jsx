@@ -1,5 +1,6 @@
 import { Alert, Button, Label, Spinner, TextInput } from 'flowbite-react'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'
 import OAuth from '../components/OAuth';
 
@@ -9,6 +10,7 @@ export default function SignUp() {
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setFormData({...formData, [e.target.id]: e.target.value.trim()});
@@ -54,7 +56,7 @@ export default function SignUp() {
       // if the response is successful
       // navigate the user to the home page
       if(res.ok) {
-        navigate('/');
+        navigate('/sign-in');
       }
     } catch (error) {
       setErrorMessage(error.message);
