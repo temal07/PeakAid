@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import authRoute from './routes/authRoute.js';
 import generateRoute from './routes/generateRoute.js';
 import userRoute from './routes/userRoute.js';
-import { errorHandler } from './utils/errorHandler.js';
 dotenv.config();
 
 mongoose.connect(process.env.MONGO_URI).then(() => {

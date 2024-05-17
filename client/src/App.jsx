@@ -13,6 +13,7 @@ import Footer from './components/Footer';
 import CreateBlog from './pages/CreateBlog';
 import CreatePlan from './pages/CreatePlan';
 import Profile from './pages/Profile';
+import ViewAIResponses from './pages/ViewAIResponses';
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
           <Route path='water/:id' element={<Water />} />
           <Route path='food/:id' element={<Food />} />
         </Route>
+        <Route path='/view-responses' element={<ViewAIResponses />} />
         <Route path='/blog/:id' element={<Blog />} />
         <Route path='/create-blog' element={<CreateBlog />} />
         <Route path='/create-plan' element={<CreatePlan />} />

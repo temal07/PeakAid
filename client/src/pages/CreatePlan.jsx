@@ -1,5 +1,6 @@
 import { Button, Label, Alert, Spinner, Avatar } from 'flowbite-react'
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 
 export default function CreatePlan() {
     const [formData, setFormData] = useState({});
@@ -112,11 +113,16 @@ export default function CreatePlan() {
   return (
     <div className='mt-20'>
         <div className="flex flex-row gap-20 md:items-center">
-            <div className='flex flex-col ml-60 mb-20'>
-                {/* Logo */}
-                <span className='self-center whitespace-nowrap text-sm sm:text-2xl font-semibold text-white px-8 py-4 bg-gradient-to-r from-blue-800 to-blue-500 rounded-lg'>PeakAid</span>
-                {/* Text under the logo */}
-                <p className="text-sm mt-6 max-w-80">With Gemini Powered Assistant, start creating your perfect week!</p>
+            <div>
+                <div className='flex flex-col ml-60 mb-20'>
+                    {/* Logo */}
+                    <span className='self-center whitespace-nowrap text-sm sm:text-2xl font-semibold text-white px-8 py-4 bg-gradient-to-r from-blue-800 to-blue-500 rounded-lg'>PeakAid</span>
+                    {/* Text under the logo */}
+                    <p className="text-sm mt-6 max-w-80">With Gemini Powered Assistant, start creating your perfect week!</p>
+                </div>
+                <Link to='/view-responses' className='text-blue-500 ml-60'>
+                    View AI Responses
+                </Link>
             </div>
             {/* Text Input */}
             <form className='flex flex-col p-20 gap-5' onSubmit={handleSubmit}>   

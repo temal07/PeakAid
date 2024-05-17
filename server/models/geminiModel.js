@@ -4,7 +4,7 @@ const geminiSchema = new mongoose.Schema({
     response: {
         type: String,
         required: true,
-    }
+    },
 }, {
     timestamps: true,
 });
