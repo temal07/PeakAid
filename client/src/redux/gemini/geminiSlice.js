@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    responseData: null,
+    GeminiResponse: null,
     savedResponse: null,
     saveInstantly: false,
     isSaved: false,
@@ -11,8 +11,8 @@ const geminiSlice = createSlice({
     name: 'geminiResponse',
     initialState,
     reducers: {
-        setResponseData: (state, action) => {
-            state.responseData = action.payload;
+        setGeminiResponse: (state, action) => {
+            state.GeminiResponse = action.payload;
         },
         setSavedResponse: (state, action) => {
             state.savedResponse = action.payload;
@@ -21,13 +21,13 @@ const geminiSlice = createSlice({
             state.saveInstantly = action.payload;
         },
         setIsSaved: (state, action) => {
-            state.isResponseSaved = action.payload;
+            state.isSaved = action.payload;
         },
     }
 });
 
 export const {
-    setResponseData, 
+    setGeminiResponse, 
     setSavedResponse,
     setSaveInstantly,
     setIsSaved,
