@@ -18,8 +18,9 @@ export default function CreatePlan() {
     };
 
     const handleSaveResponse = async () => {
+        setIsResponseSaved(false);
+        setErrorMessage(null);
         try {
-            setIsResponseSaved(false);
             // We want to avoid the backend to save the gemini responses instantly.
             // Therefore, we'll set a flag that is set to false and we'll access the
             // flag in the backend. If the flag is true, then & only then the backend
@@ -33,9 +34,9 @@ export default function CreatePlan() {
                     saveInstantly,
                 }),
             });
+            const data = await res.json();
     
             if (res.ok) {
-                const data = await res.json();
                 setSavedResponse(data);
                 setSaveInstantly(true);
                 setIsResponseSaved(true);
