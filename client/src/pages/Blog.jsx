@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 export default function Blog() {
+  // state for all the blogs
+  const [blog, setBlog] =  useState([]);
+
+  
+
   return (
     <div>
-      Blog page is here
+      
     </div>
   )
 }
