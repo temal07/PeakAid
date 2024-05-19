@@ -11,9 +11,12 @@ const blogSchema = new mongoose.Schema({
     },
     blogImage: {
         type: String, 
-        default: `https://green.org/wp-content/uploads/2024/01/
-        bodyshot-bodyshotperformance-health-fitness-nutrition-personalisation-
-        successtips-focus-findyourwhy-performance-1-1-o8zgc66du6n5t2nyqpo5gebwdp7gz3uvenck4w3ncw.jpg`
+        default: 'https://green.org/wp-content/uploads/2024/01/bodyshot-bodyshotperformance-health-fitness-nutrition-personalisation-successtips-focus-findyourwhy-performance-1-1-o8zgc66du6n5t2nyqpo5gebwdp7gz3uvenck4w3ncw.jpg'
+    },
+    slug: {
+        type: String,
+        required: true,
+        unique: true,
     },
     title: {
         type: String,
@@ -24,6 +27,6 @@ const blogSchema = new mongoose.Schema({
     timestamps: true,
 });
 
-const Blog = mongoose.Model('Blog', blogSchema);
+const Blog = mongoose.model('Blog', blogSchema);
 
 export default Blog;
