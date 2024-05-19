@@ -6,6 +6,7 @@ import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/
 import { app } from '../firebase.js';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateBlog() {
   // create a state for keeping track of the uploaded file
@@ -13,6 +14,8 @@ export default function CreateBlog() {
   const [imageUploadProgress, setImageUploadProgress] = useState(null);
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
+  const [publishError, setPublishError] = useState(null);
+  const navigate = useNavigate();
 
   // Make sure before you upload the image using the handleUploadImage
   // function, you follow the following steps: 
@@ -75,12 +78,39 @@ export default function CreateBlog() {
       setImageUploadProgress(null);
       console.log(error);
     }
-  };
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res  = await fetch('/api/blog/create-blog', {
+        method: "POST",
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        setPublishError(data.message);
+        return;
+      }
+
+      if (res.ok) {
+        setPublishError(null);
+        navigate(`/blog/${data.slug}`);
+      }
+    } catch (error) {
+      setPublishError('Something went wrong. Please Try again...');      
+    }
+  }
 
   return (
     <div className='p-3 max-w-3xl mx-auto min-h-screen'>
       <h1 className='text-3xl my-7 text-center font-semibold'>Create your Blog</h1>
-      <form className='flex flex-col gap-4'>
+      <form className='flex flex-col gap-4' onSubmit={handleSubmit}>
         {/* Title */}
         <div className="flex flex-col gap-4 sm:flex-row justify-between">
           <TextInput
@@ -89,6 +119,7 @@ export default function CreateBlog() {
             required
             id='title'
             className='flex-1'
+            onChange={(e) => setFormData({...formData, title: e.target.value})}
           />
         </div>
         {/* Image Upload */}
@@ -136,10 +167,13 @@ export default function CreateBlog() {
           )
         }
         {/* Text Input from React Quill */}
-        <ReactQuill theme='snow' placeholder='Write Something...' required className='h-72 mb-20'/>
+        <ReactQuill theme='snow' placeholder='Write Something...' onChange={(value) => {setFormData({...formData, content: value})}} required className='h-72 mb-20'/>
         <Button type='submit' gradientDuoTone="purpleToPink">
             Publish
         </Button>
+        {
+          publishError && <Alert className='mt-5' color='failure'>{publishError}</Alert>
+        }
       </form>
     </div>
   )
