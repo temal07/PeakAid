@@ -4,10 +4,7 @@
     a weekly plan
 */  
 import express from 'express';
-import { generativeGeminiAI } from '../controllers/generativeAIController.js';
-import { saveResponse } from '../controllers/saveResponse.js';
-import { deleteResponse } from '../controllers/deleteResponse.js';
-import { getResponse } from '../controllers/getResponse.js';
+import { generativeGeminiAI, saveResponse, deleteResponse, getResponse } from '../controllers/geminiController.js';
 
 const router = express.Router();
 
