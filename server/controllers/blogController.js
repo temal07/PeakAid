@@ -1,8 +1,8 @@
 import Blog from "../models/blogModel.js";
+import User from "../models/userModel.js";
 import { errorHandler } from "../utils/errorHandler.js";
 
 export const createBlog = async (req, res, next) => {
-    console.log(req.user);
     if (!req.body.title || !req.body.content) {
         return next(errorHandler(400, 'Please provide all required fields'));
     }
@@ -13,9 +13,27 @@ export const createBlog = async (req, res, next) => {
         userId: req.user.id,
         ...req.body,
         slug,
-   });
+    });
+
     try {
         const savedBlog = await newBlog.save();
+        // Log the initial amountOfBlog
+        const user = await User.findById(req.user.id);
+        console.log(user);
+
+        console.log("Initial amountOfBlog:", user.amountOfBlog);
+
+        const updateResult = await User.updateOne(
+            { _id: req.user.id },
+            { $inc: { amountOfBlog: 1 } }
+        );
+
+        // Log the result of the update operation
+        console.log("Update Result:", updateResult);
+
+        // Verify the update by fetching the user
+        const updatedUser = await User.findById(req.user.id);
+        console.log("Updated User:", updatedUser);
         res.status(201).json(savedBlog);
     } catch (error) {
         next(errorHandler(error.statusCode, error.message));

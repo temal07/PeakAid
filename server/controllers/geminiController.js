@@ -28,6 +28,9 @@ export const generativeGeminiAI = async (req, res, next) => {
 
 export const saveResponse = async (req, res, next) => {
     const { saveInstantly, text } = req.body;
+
+    const userId = req.user.id;
+
     try {
         // only save the response if the flag from frontend is true
         // before generating the actual text, save the text inside 
@@ -38,6 +41,8 @@ export const saveResponse = async (req, res, next) => {
         });
 
         if (saveInstantly === true) { 
+            savedGeminiResponse.userId = userId;
+
             await savedGeminiResponse.save();
             res.status(200).json({ message: "The response has been successfully saved!"});
         } else {
@@ -52,8 +57,10 @@ export const saveResponse = async (req, res, next) => {
 }
 
 export const getResponse = async (req, res, next) => {
+    const userId = req.user.id;
+
     try {
-        const geminiResponses = await GeminiResponse.find();
+        const geminiResponses = await GeminiResponse.find({ userId });
         res.status(200).json(geminiResponses);
     } catch (error) {
         next(errorHandler(error.statusCode, error.message));        
@@ -61,14 +68,21 @@ export const getResponse = async (req, res, next) => {
 }
 
 export const deleteResponse = async (req, res, next) => {
-    const {id:responseID} = req.params;
+    const {responseId} = req.params;
+    const userId = req.user.id;
 
     try {
-        const response = await GeminiResponse.findByIdAndDelete(responseID);
-        if (!response) {
-            return next(errorHandler(404, `No responses with id ${responseID} found!`));
+        // Find the response by ID and ensure that it belongs to the authenticated user
+        const response = await GeminiResponse.findByIdAndDelete(responseId);
+        if (userId !== req.params.userId) {
+            return next(errorHandler(403, 'You are not allowed to delete this post'));
         }
-        return res.status(200).json(`The response with the id number of ${responseID} has successfuly been deleted`);
+
+        if (!response) {
+            return next(errorHandler(404, `No responses with id ${responseId} found!`));
+        }
+
+        return res.status(200).json(`The response with the id number of ${responseId} has successfuly been deleted`);
     } catch (error) {
         console.error(error);
         next(errorHandler(error.statusCode, error.message));

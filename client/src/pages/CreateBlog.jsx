@@ -7,6 +7,7 @@ import { app } from '../firebase.js';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function CreateBlog() {
   // create a state for keeping track of the uploaded file
@@ -15,7 +16,10 @@ export default function CreateBlog() {
   const [imageUploadError, setImageUploadError] = useState(null);
   const [formData, setFormData] = useState({});
   const [publishError, setPublishError] = useState(null);
+  const { currentUser } = useSelector(state => state.user);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Make sure before you upload the image using the handleUploadImage
   // function, you follow the following steps: 

@@ -51,7 +51,13 @@ export default function Profile() {
                 <h1 className='text-3xl ml-20'>Blogs Posted:</h1>
                 <div className='ml-20 border border-gray-500 rounded-lg border-height'></div>
                 <div className='ml-20'>
-                    <p className='text-2xl'>This person has posted {currentUser.amountOfBlog} blogs</p>
+                    <p className='text-2xl'>This person has posted {currentUser.amountOfBlog} {
+                        currentUser.amountOfBlog > 1 || currentUser.amountOfBlog === 0  ? (
+                            'blogs'
+                        ) : (
+                            'blog'
+                        )
+                    }</p>
                     <Link to={`/blog/${currentUser._id}`} className='text-blue-500'>See this person's blogs</Link>
                 </div>
             </div>

@@ -9,13 +9,36 @@ export default function ViewAIResponses() {
   // response data that'll come from backend
   const [error, setError] = useState(null);
   const [allResponses, setAllResponses] = useState([]);
+  const { currentUser } = useSelector(state => state.user);
 
+  // prettify the text gemini generates
+  const prettifyText = (text) => {
+      // Remove leading and trailing whitespace
+      text = text.trim();
+
+      // Remove leading and trailing stars
+      text = text.replace(/^\*+|\*+$/g, '');
+
+      // Replace consecutive stars with a single space
+      text = text.replace(/\*+/g, ' ');
+
+      // Replace consecutive whitespace characters with a single space
+      text = text.replace(/\s+/g, ' ');
+
+      // Remove any remaining leading or trailing whitespace
+      text = text.trim();
+
+      return text;
+  };
+
+  //get the response
+  
   useEffect(() => {
     const handleGettingResponse = async () => {
       // Get the response from the backend.
       try {
         setError(null);
-        const res = await fetch('/api/generate/view-responses');
+        const res = await fetch(`/api/generate/view-responses/${currentUser._id}`);
         const data = await res.json();
   
         if(res.ok) {
@@ -31,20 +54,22 @@ export default function ViewAIResponses() {
       }
     }
 
+    // Call handleGettingResponse with currentUser._id and responseIds
     handleGettingResponse();
-  }, []);
+  }, [currentUser._id]);
 
+  // delete the response
   // When deleting, use the filter method to filter out the unwanted one
   const handleDeleteResponse = async (id) => {
     setError(null);
-
+  
     console.log('Deleting Response with the id:', id)
     try {
-      const res = await fetch(`/api/generate/delete-response/${id}`, {
+      const res = await fetch(`/api/generate/delete-response/${id}/${currentUser._id}`, {
         method: "DELETE",
       });
       const data = await res.json();
-
+  
       if (!res.ok) {
         setError(data.message || 'There was an error, please try again..');
       } else {
@@ -54,7 +79,7 @@ export default function ViewAIResponses() {
       console.log(error.message);
       setError('Error during fetching the data. Please try again!');
     }
-  }
+  }  
 
   return (
     <div className='flex flex-col'>
@@ -68,7 +93,7 @@ export default function ViewAIResponses() {
             {allResponses.map((response, index) => (
               <div key={response._id} className="flex flex-row items-center mr-20 mb-20">
                 <div className='mt-10 bg-gray-300 rounded-md px-5 py-5 text-wrap max-w-max'>
-                  {response.response}
+                  {prettifyText(response.response)}
                 </div>
                 <div className=''>
                   <Button

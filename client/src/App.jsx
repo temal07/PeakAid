@@ -28,7 +28,7 @@ export default function App() {
           <Route path='water/:id' element={<Water />} />
           <Route path='food/:id' element={<Food />} />
         </Route>
-        <Route path='/view-responses' element={<ViewAIResponses />} />
+        <Route path='/view-responses/:id' element={<ViewAIResponses />} />
         <Route path='/blog/:id' element={<Blog />} />
         <Route path='/create-blog' element={<CreateBlog />} />
         <Route path='/create-plan' element={<CreatePlan />} />
