@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 export default function Profile() {
     const { currentUser } = useSelector(state => state.user); 
 
+    console.log(currentUser);
+
   return (
     <div className='flex flex-col sm:justify-center items-center md:flex-row gap-20 my-10'>
         {/* User profile Pciture */}        

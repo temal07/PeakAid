@@ -1,15 +1,20 @@
-import { Table, TableRow } from 'flowbite-react';
+import { Table, TableRow, Modal, Button } from 'flowbite-react';
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { HiOutlineExclamationCircle } from 'react-icons/hi';
+import { updateAmountOfBlog } from '../redux/user/userSlice';
 
 export default function Blog() {
   // currentUser is needed to display their blogs.
   const { currentUser } = useSelector((state) => state.user);
   // A piece of state is created to store the blogs that come from the backend
   const [blogs, setBlogs] = useState([]);
-
   const [error, setError] = useState(null);
+  // A state that initialises the blog id that's going to be deleted
+  const [blogIdToDelete, setBlogIdToDelete] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const dispatch = useDispatch();
 
   // The following code uses a useEffect hook to
   // fetch the posts that were created in the backend
@@ -45,6 +50,28 @@ export default function Blog() {
   useEffect(() => {
     console.log(blogs);
   }, [blogs]);
+
+  const handleDeleteBlog = async () => {
+    setError(null);
+    setShowModal(false);
+    try {
+      const res = await fetch(`/api/blog/delete-blog/${blogIdToDelete}/${currentUser._id}`, {
+        method: "DELETE"
+      });
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        setBlogs((prevBlog) => prevBlog.filter((blog) => blog._id !== blogIdToDelete));
+        dispatch(updateAmountOfBlog(currentUser.amountOfBlog - 1));
+        console.log(updateAmountOfBlog());
+      }
+    } catch (error) {
+        setError(error.message);
+        console.log(error.message);      
+    }
+  }
 
   return (
     <div>
@@ -82,6 +109,10 @@ export default function Blog() {
                       <Table.Cell>
                         <span
                           className='font-medium text-red-500 hover:underline cursor-pointer'
+                          onClick={() => {
+                            setShowModal(true);
+                            setBlogIdToDelete(blog._id);
+                          }}
                         >
                           Delete
                         </span>
@@ -116,6 +147,30 @@ export default function Blog() {
             </div>
           )
         }
+          <Modal
+          show={showModal}
+          onClose={() => setShowModal(false)}
+          popup
+          size='md'
+          >
+          <Modal.Header />
+          <Modal.Body>
+            <div className='text-center'>
+              <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' />
+              <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>
+                Are you sure you want to delete this post?
+              </h3>
+              <div className='flex justify-center gap-4'>
+                <Button color='failure' onClick={handleDeleteBlog}>
+                  Yes, I'm sure
+                </Button>
+                <Button color='gray' onClick={() => setShowModal(false)}>
+                  No, cancel
+                </Button>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
     </div>
   )
 }

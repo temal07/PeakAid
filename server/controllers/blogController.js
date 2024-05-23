@@ -80,3 +80,37 @@ export const getBlogs = async (req, res, next) => {
         next(errorHandler(error.statusCode, error.message));
     } 
 }
+
+export const deleteBlogs = async (req, res, next) => {
+    console.log(req.user.id);
+    console.log(req.params.userId);
+    console.log(req.params.blogId);
+
+    if (req.user.id !== req.params.userId) {
+        return next(errorHandler(403, 'You are not allowed to delete this blog.'));
+    }
+    
+    try {
+        // Get the blog's id
+        const blog = await Blog.findById(req.params.blogId);
+
+        if (!blog) {
+            return next(errorHandler(404, 'Blog not found...'));
+        }
+        
+
+        await Blog.findByIdAndDelete(req.params.blogId);
+        // Decrement the amountOfBlog field in the user schema
+        await User.updateOne(
+            { _id: req.user.id },
+            { $inc: { amountOfBlog: -1 } }
+        );
+        // Verify the update by fetching the user
+        const updatedUser = await User.findById(req.user.id);
+        console.log("Updated User:", updatedUser);
+
+        res.status(200).json('The blog has been deleted successfully.');   
+    } catch (error) {
+        next(errorHandler(error.statusCode, error.message));
+    }
+}

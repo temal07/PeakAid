@@ -8,6 +8,7 @@ import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { updateAmountOfBlog } from '../redux/user/userSlice.js';
 
 export default function CreateBlog() {
   // create a state for keeping track of the uploaded file
@@ -104,6 +105,7 @@ export default function CreateBlog() {
 
       if (res.ok) {
         setPublishError(null);
+        dispatch(updateAmountOfBlog(currentUser.amountOfBlog + 1));
         navigate(`/blog/${data.slug}`);
       }
     } catch (error) {
