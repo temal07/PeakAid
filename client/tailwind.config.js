@@ -1,4 +1,4 @@
-const flowbite = require('flowbite-react/tailwind');
+const flowbite = require('flowbite-react/tailwind'); 
 const defaultTheme = require('tailwindcss/defaultTheme');
 
 /** @type {import('tailwindcss').Config} */
@@ -32,5 +32,5 @@ export default {
 			},
     },
   },
-  plugins: [flowbite.plugin()],
+  plugins: [flowbite.plugin(), require('tailwind-scrollbar')],
 }

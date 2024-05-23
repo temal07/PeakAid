@@ -26,7 +26,7 @@ export default function Welcome() {
             <li className='mb-2'>Create your own blogs</li>
             <li className='mb-2'>Read other people's blogs</li>
             <li className='mb-2'>Keep track of your exercises</li>
-            <li className='mb-2'>Interact with the newest AI Model of Google: Gemini</li>
+            <li className='mb-2 gradient-text text-2xl'><h1>Interact with the newest AI Model of Google: Gemini</h1></li>
             </ul>
         </div>
         </div>

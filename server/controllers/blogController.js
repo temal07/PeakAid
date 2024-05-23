@@ -57,8 +57,8 @@ export const getBlogs = async (req, res, next) => {
             query.slug = req.query.slug;
         }
 
-        if (req.query.postId) {
-            query._id = req.query.postId;
+        if (req.query.blogId) {
+            query._id = req.query.blogId;
         }
 
         if (req.query.searchTerm) {
