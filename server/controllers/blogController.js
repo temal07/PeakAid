@@ -116,9 +116,6 @@ export const deleteBlogs = async (req, res, next) => {
 }
 
 export const updateBlog = async (req, res, next) => {
-    console.log(req.body);
-    console.log(req.params.blogId);
-
     if (req.user.id !== req.params.userId) {
         return next(errorHandler(403, 'You are not allowed to update this blog...'));
     }

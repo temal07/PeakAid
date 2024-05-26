@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import { useSelector } from 'react-redux'
 import BlogCard from './BlogCard';
+import { Link } from 'react-router-dom';
 
 // this is the main home page
 // Blog.jsx will be for displaying user's blogs.
@@ -55,8 +56,15 @@ export default function HomeComp({ blogs }) {
                     )).splice(0, 3)
                   }
                 </div>
-                <div className=''>
-
+                <div>
+                  <h2 className='text-2xl font-semibold text-left'>Need some assistance?</h2>
+                  <p className='text-xl'>
+                    Don't worry! With Google's Gemini, you can
+                    get the best advice whenever you want! 
+                  </p>
+                  <Link to='/create-plan' className='text-teal-500'>
+                    Try Gemini now! 
+                  </Link>
                 </div>
               </div>
             ) 
