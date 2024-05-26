@@ -15,6 +15,7 @@ import CreatePlan from './pages/CreatePlan';
 import Profile from './pages/Profile';
 import ViewAIResponses from './pages/ViewAIResponses';
 import SingleBlog from './pages/SingleBlog';
+import UpdateBlog from './pages/UpdateBlog';
 
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
         {/* For a single blog */}
         <Route path='/blog/:blogSlug' element={<SingleBlog />}/>
         <Route path='/create-blog' element={<CreateBlog />} />
+        <Route path='/update-blog/:blogId' element={<UpdateBlog />} />
         <Route path='/create-plan' element={<CreatePlan />} />
         <Route path='/activities:id' element={<Activities />} />
       </Routes>

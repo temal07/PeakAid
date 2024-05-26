@@ -118,11 +118,9 @@ export default function Blog() {
                         </span>
                       </Table.Cell>
                       <Table.Cell>
-                        <span
-                          className=' text-teal-500 hover:underline'
-                        >
+                        <Link to={`/update-blog/${blog._id}`} className=' text-teal-500 hover:underline'>
                           Edit
-                        </span>
+                        </Link>
                       </Table.Cell>
                     </TableRow>
                   </Table.Body>

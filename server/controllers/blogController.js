@@ -114,3 +114,29 @@ export const deleteBlogs = async (req, res, next) => {
         next(errorHandler(error.statusCode, error.message));
     }
 }
+
+export const updateBlog = async (req, res, next) => {
+    console.log(req.body);
+    console.log(req.params.blogId);
+
+    if (req.user.id !== req.params.userId) {
+        return next(errorHandler(403, 'You are not allowed to update this blog...'));
+    }
+
+    try {
+        const blogToUpdate = await Blog.findByIdAndUpdate(
+            req.params.blogId,
+            {
+                $set: {
+                    title: req.body.title,
+                    content: req.body.content,
+                    image: req.body.image,
+                }
+            }, 
+            { new: true }
+        );
+        res.status(200).json(blogToUpdate);
+    } catch (error) {
+        next(errorHandler(error.statusCode, error.message));
+    }
+}
