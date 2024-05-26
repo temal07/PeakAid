@@ -60,7 +60,7 @@ export default function Profile() {
                             'blog'
                         )
                     }</p>
-                    <Link to={`/blog/${currentUser._id}`} className='text-blue-500'>See this person's blogs</Link>
+                    <Link to={`/blogs/${currentUser._id}`} className='text-blue-500'>See this person's blogs</Link>
                 </div>
             </div>
         </div>

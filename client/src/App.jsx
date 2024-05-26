@@ -14,7 +14,7 @@ import CreateBlog from './pages/CreateBlog';
 import CreatePlan from './pages/CreatePlan';
 import Profile from './pages/Profile';
 import ViewAIResponses from './pages/ViewAIResponses';
-import SingleBlog from './components/SingleBlog';
+import SingleBlog from './pages/SingleBlog';
 
 export default function App() {
   return (
@@ -31,9 +31,9 @@ export default function App() {
         </Route>
         <Route path='/view-responses/:id' element={<ViewAIResponses />} />
         {/* For users all blogs */}
-        <Route path='/blog/:id' element={<Blog />} />
+        <Route path='/blogs/:id' element={<Blog />} />
         {/* For a single blog */}
-        <Route path='/blogs/:id' element={<SingleBlog />}/>
+        <Route path='/blog/:blogSlug' element={<SingleBlog />}/>
         <Route path='/create-blog' element={<CreateBlog />} />
         <Route path='/create-plan' element={<CreatePlan />} />
         <Route path='/activities:id' element={<Activities />} />

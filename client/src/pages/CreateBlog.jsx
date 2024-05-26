@@ -75,6 +75,7 @@ export default function CreateBlog() {
             setImageUploadProgress(null);
             setImageUploadError(null);
             setFormData({ ...formData, image: downloadURL });
+            console.log(formData);
           });
         }
       );
@@ -106,7 +107,7 @@ export default function CreateBlog() {
       if (res.ok) {
         setPublishError(null);
         dispatch(updateAmountOfBlog(currentUser.amountOfBlog + 1));
-        navigate(`/blog/${data.slug}`);
+        navigate(`/blogs/${currentUser._id}`);
       }
     } catch (error) {
       setPublishError('Something went wrong. Please Try again...');      

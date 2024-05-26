@@ -9,7 +9,7 @@ const blogSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    blogImage: {
+    image: {
         type: String, 
         default: 'https://green.org/wp-content/uploads/2024/01/bodyshot-bodyshotperformance-health-fitness-nutrition-personalisation-successtips-focus-findyourwhy-performance-1-1-o8zgc66du6n5t2nyqpo5gebwdp7gz3uvenck4w3ncw.jpg'
     },

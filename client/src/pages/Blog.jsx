@@ -93,16 +93,16 @@ export default function Blog() {
                     <TableRow>
                       <Table.Cell>{new Date(blog.updatedAt).toLocaleString()}</Table.Cell>
                       <Table.Cell>
-                        <Link to={`/blogs/${blog.slug}`}>
+                        <Link to={`/blog/${blog.slug}`}>
                           <img 
-                            src={blog.blogImage}
+                            src={blog.image}
                             alt={blog.title}
                             className='w-20 h-10 object-cover bg-gray-500'
                           />
                         </Link>
                       </Table.Cell>
                       <Table.Cell>
-                        <Link className='font-medium text-gray-900' to={`/blogs/${blog.slug}`}>
+                        <Link className='font-medium text-gray-900' to={`/blog/${blog.slug}`}>
                           {blog.title}
                         </Link>
                       </Table.Cell>
