@@ -53,7 +53,9 @@ export default function Water() {
   // These functions are updating the most recent water information (the 
   //  most up-to-date)
 
-  const handleDeleteAmount = async () => {
+  const handleDeleteAmount = async (e) => {
+    e.preventDefault();
+
     try {
       const res = await fetch(`/api/water/delete-water-amount/${waterId}/${currentUser._id}`, {
         method: 'PUT',
@@ -76,7 +78,9 @@ export default function Water() {
   }
 
   
-  const handleAddAmount = async () => {
+  const handleAddAmount = async (e) => {
+    e.preventDefault();
+
     // Sends a POST request to the backend
     try {
       const res = await fetch(`/api/water/add-water-amount/${waterId}/${currentUser._id}`, {
@@ -101,20 +105,21 @@ export default function Water() {
   // Add a handleSubmit function for sending the recent water info
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setError(null);
+
     try {
       const res = await fetch(`/api/water/add-water/${currentUser._id}`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ waterAmount: formData.waterAmount }),
       });
-      const data = await res.json()
+      const data = await res.json();
       if (res.ok) {
         console.log(data);
         setError(null);
-        setPreviousWater([...previousWater, formData]);
-        setFormData({ waterAmount: 0 });
+        const newWaterAmount = 0;
+        setPreviousWater([...previousWater, data]);
+        setFormData({ waterAmount: newWaterAmount });
       } else {
         setError(data.message);
         return;
@@ -168,7 +173,7 @@ export default function Water() {
           {/* Plus-minus icons */}
           <div className='gap-5 ml-20 flex flex-row justify-evenly'>
             <svg 
-              className="w-6 h-6 text-gray-800 dark:text-white cursor-pointer" 
+              className={`w-6 h-6 text-gray-800 dark:text-white cursor-pointer ${formData.waterAmount <= 0 ? 'pointer-events-none opacity-50' : ''}`} 
               aria-hidden="true" 
               xmlns="http://www.w3.org/2000/svg" 
               width="24" 
@@ -188,7 +193,7 @@ export default function Water() {
               </h1>
             </div>
             <svg 
-              className="w-6 h-6 text-gray-800 dark:text-white cursor-pointer" 
+              className={`w-6 h-6 text-gray-800 dark:text-white cursor-pointer ${formData.waterAmount >= 20 ? 'pointer-events-none opacity-50' : ''}`}
               aria-hidden="true" 
               xmlns="http://www.w3.org/2000/svg" 
               width="24" 
