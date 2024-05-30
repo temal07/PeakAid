@@ -6,6 +6,9 @@ import authRoute from './routes/authRoute.js';
 import generateRoute from './routes/generateRoute.js';
 import userRoute from './routes/userRoute.js';
 import blogRoute from './routes/blogRoute.js';
+import foodRoute from './routes/foodRoute.js';
+import waterRoute from './routes/waterRoute.js';
+import activityRoute from './routes/activityRoute.js';
 
 dotenv.config();
 
@@ -24,6 +27,9 @@ app.use('/api/auth', authRoute);
 app.use('/api/generate', generateRoute);
 app.use('/api/user', userRoute);
 app.use('/api/blog', blogRoute);
+app.use('/api/water', waterRoute);
+app.use('/api/food', foodRoute);
+app.use('/api/activity', activityRoute);
 
 // create an error handler middleware
 // (the 'success' key is used in the frontend);
