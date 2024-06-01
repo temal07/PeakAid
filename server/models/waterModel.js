@@ -13,6 +13,11 @@ const waterSchema = new mongoose.Schema({
         required: true,
         default: 0,
     },
+    maximumAmount: {
+        type: Number,
+        default: 20,
+    }
+
 }, {timestamps: true});
 
 // Assigns a Water variable and sets it to the schema

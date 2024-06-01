@@ -88,7 +88,7 @@ export const addWater = async (req, res, next) => {
             access this person's water
             information...
         `));
-    }   
+    } 
     // Checks if there's any information coming from the body;
     if (!waterAmount) {
         // if there is no information, the server sends a 404 response,
@@ -105,7 +105,12 @@ export const addWater = async (req, res, next) => {
         const newWater = new Water({
             userId,
             waterAmount,
+            maximumAmount: 20,
         });
+
+        if (newWater.waterAmount > 20) {
+            return next(errorHandler(400, 'The limit has been reached...'));            
+        }
 
         // First awaits, then saves the water information
         // (because the server must await for a response to come out)
@@ -124,7 +129,7 @@ export const addWaterAmount = async (req, res, next) => {
     const userId = req.user.id;
 
     // Gets the water amount that should be added
-    const { waterAmount } = req.body;
+    let { waterAmount } = req.body;
     
     if (userId !== req.params.userId) {
         return next(errorHandler(403, "You are not allowed to update this person's water amount"))
@@ -136,24 +141,31 @@ export const addWaterAmount = async (req, res, next) => {
     if (!water) {
         return next(errorHandler(404, 'Water information not found'));
     }
-
+    
     try {
-        // if the water amount tries to exceed 20, the server gives an error.
-        if (water.waterAmount >= 20) {
+        console.log(`Current water amount: ${water.waterAmount}`);
+        console.log(`Water amount to add: ${waterAmount}`);
+        console.log(`Maximum water amount: ${water.maximumAmount}`);
+
+        // Calculate the new water amount
+        const newWaterAmount = water.waterAmount + waterAmount;
+
+        // Before saving, if the new water amount exceeds the maximum amount, the server gives an error.
+        if (newWaterAmount > water.maximumAmount) {
             return next(errorHandler(400, 'Limit has been reached'));
         }
-        console.log(water.waterAmount);
-        // Increments by 1
-        water.waterAmount = water.waterAmount + waterAmount;    
+
+        // Update the water amount
+        water.waterAmount = newWaterAmount;
+
         // Saves the updated water info
         await water.save();
-        console.log(water.waterAmount);
+        console.log(`Updated water amount: ${water.waterAmount}`);
 
         res.status(200).json({
-            message : `Amount for water id ${water._id} has successfully been updated`,
+            message: `Amount for water id ${water._id} has successfully been updated`,
             water,
         });
-
     } catch (error) {
         next(errorHandler(error.statusCode, error.message));
     }

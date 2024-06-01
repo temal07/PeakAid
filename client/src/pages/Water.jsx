@@ -10,6 +10,7 @@ export default function Water() {
   // A form data for sending the water amount to the backend
   const [formData, setFormData] = useState({
     waterAmount: null,
+    maximumAmount: null,
   });
   // State for most recent water id
   const [waterId, setWaterId] = useState(null);
@@ -32,7 +33,7 @@ export default function Water() {
         if (res.ok) {
           console.log(data);
           const eachId = data.map(item => item._id);
-          setFormData({waterAmount: data[0].waterAmount});
+          setFormData({waterAmount: data[0].waterAmount, maximumAmount: data[0].maximumAmount});
           setPreviousWater(data.slice(1));
           // I set the index to 0 because 
           // users will update their most recent water amount
@@ -44,7 +45,7 @@ export default function Water() {
     }
 
     fetchWaterAmount();
-  }, [currentUser._id]);
+  }, [currentUser._id, formData.waterAmount]);
 
   // Both handleDeleteAmount and handleAddAmount 
   // will be asynchronous because they will update 
@@ -53,14 +54,17 @@ export default function Water() {
   // These functions are updating the most recent water information (the 
   //  most up-to-date)
 
-  const handleDeleteAmount = async (e) => {
-    e.preventDefault();
-
+  const handleDeleteAmount = async () => {
+    const decrement = 1;
+    if (formData.waterAmount - decrement < 0) {
+      setError('Water amount is at its minimum and cannot be further decremented');
+      return;
+    }
     try {
       const res = await fetch(`/api/water/delete-water-amount/${waterId}/${currentUser._id}`, {
         method: 'PUT',
         headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ waterAmount : 1 }),
+        body: JSON.stringify({ waterAmount : decrement }),
       });
 
       const data = await res.json();
@@ -68,7 +72,7 @@ export default function Water() {
       if (res.ok) {
         console.log(data);
         console.log(waterId);
-        setFormData((prevData) => ({ ...prevData, waterAmount: prevData.waterAmount - 1 }));
+        setFormData((prevData) => ({ ...prevData, waterAmount: prevData.waterAmount - decrement }));
       } else {
         console.log('There was an error during the fetching process. Please try again');
       }
@@ -78,16 +82,20 @@ export default function Water() {
   }
 
   
-  const handleAddAmount = async (e) => {
-    e.preventDefault();
-
+  const handleAddAmount = async () => {
+    const increment = 1;
     // Sends a POST request to the backend
+    if (formData.waterAmount + increment > formData.maximumAmount) {
+      setError('Water amount is at its maximum and cannot be further incremented');
+      return;
+    }
+
     try {
       const res = await fetch(`/api/water/add-water-amount/${waterId}/${currentUser._id}`, {
         method: "PUT",
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-          waterAmount: 1,
+          waterAmount: increment,
         }),
       });
       const data = await res.json();
@@ -95,37 +103,10 @@ export default function Water() {
       // Logs the data if the response is OK.
       if (res.ok) {
         console.log(data);
-        setFormData((prevData) => ({ ...prevData, waterAmount: prevData.waterAmount + 1 }));
+        setFormData((prevData) => ({ ...prevData, waterAmount: prevData.waterAmount + increment }));
       }
     } catch (error) {
       console.log(error);      
-    }
-  }
-
-  // Add a handleSubmit function for sending the recent water info
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError(null);
-
-    try {
-      const res = await fetch(`/api/water/add-water/${currentUser._id}`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ waterAmount: formData.waterAmount }),
-      });
-      const data = await res.json();
-      if (res.ok) {
-        console.log(data);
-        setError(null);
-        const newWaterAmount = 0;
-        setPreviousWater([...previousWater, data]);
-        setFormData({ waterAmount: newWaterAmount });
-      } else {
-        setError(data.message);
-        return;
-      }
-    } catch (error) {
-      console.log(error);
     }
   }
 
@@ -145,18 +126,39 @@ export default function Water() {
       console.log(error);
     }
   }
-  
-  // Add a useEffect to monitor changes in waterAmount and check for errors
-  useEffect(() => {
-    console.log(formData.waterAmount);
-    if (formData.waterAmount < 0) {
-      setError('Water amount is already 0 and cannot be further decremented...');
-    } else if (formData.waterAmount >= 20) {
-      setError('Water amount is at its maximum and cannot be further incremented');
-    } else {
-      setError(null); // Reset error if waterAmount is not negative
+
+  // Add a handleSubmit function for sending the recent water info
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError(null);
+
+    if (formData.waterAmount > 20) {
+      setError('Water amount must not exceed 20');
+      return;
     }
-  }, [formData.waterAmount]);
+
+    try {
+      const res = await fetch(`/api/water/add-water/${currentUser._id}`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ waterAmount: formData.waterAmount }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        console.log(data);
+        setError(null);
+        setPreviousWater([...previousWater, data]);
+        console.log("formData after update:", formData);
+        setFormData({ waterAmount: 0 });
+      } else {
+        setError(data.message);
+        return;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   
   return (
     <div className='flex flex-col md:flex-row gap-5'>
