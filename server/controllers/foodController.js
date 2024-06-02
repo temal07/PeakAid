@@ -5,38 +5,38 @@ import Food from "../models/foodModel.js";
 
 // the function gets the food data that is stored in MongoDB
 export const getFood = async (req, res, next) => {
-    // gets the user's id and assigns it to a new variable
-    // called userId
-    const userId = req.user.id;
-
-    // Checks if the userId (the user that's logged in) is 
-    // equal to the one in the parameters (see the related route for additional information)
-    if (userId !== req.params.userId) {
-        // If they're not equal, the server sends a 403 response
-        // and does not allow the logged in user to access the information
-        return next(errorHandler(
-            403, 
-            `You are not allowed to 
-            access this person's food
-            information...
-        `));
-    }
-    // If they are equal, the server fetches the data through a try-catch block
     try {
-        // gets the food information of the user and assigns it to
-        // a variable called food
-        const food = await Food.find({ userId });
-        // Note: food variable comes in an array form
+        const startIndex = parseInt(req.query.startIndex) || 0;
+        const limit = parseInt(req.query.limit) || 9;
+        const sortDirection = req.query.order === 'asc' ? 1 : -1;
 
-        // checks if there's no data:
-        if (food.length === 0) {
-            return next(errorHandler(404, `No food info found.`));
+        // Build the query object
+        const query = {};
+
+        if (req.query.userId) {
+            query.userId = req.query.userId;
         }
-        // Logs the data for testing purposes: 
-        console.log(food);
 
-        // sends back the data in a JSON form with a 200 response (OK)
-        res.status(200).json(food);
+        if (req.query.foodId) {
+            query._id = req.query.foodId;
+        }
+
+        if (req.query.searchTerm) {
+            query.$or = [
+                { name: { $regex: req.query.searchTerm, $options: 'i' } },
+                { calories: { $regex: req.query.searchTerm, $options: 'i' } }
+            ];
+        }
+
+        const foods = await Food.find(query)
+            .sort({ updatedAt: sortDirection })
+            .skip(startIndex)
+            .limit(limit);
+
+        const totalFoods = await Food.countDocuments(query);
+        console.log({ foods, totalFoods })
+
+        res.status(200).json({ foods, totalFoods });
     } catch (error) {
         // if an error occurs, provides the error in a more detailed way.
         next(errorHandler(error.statusCode, error.message));        
@@ -47,11 +47,11 @@ export const addFood = async (req, res, next) => {
     // Gets the user's id and assigns it to a variable called userId
     const userId = req.user.id;
     // Gets the food data that is coming from the body of the request
-    const { food } = req.body;
+    const { name, calories } = req.body;
 
     // Returns a 404 error if there is no information in req.body
-    if (!food) {
-        return next(errorHandler(400, 'Please provide food info!'));
+    if (!name || !calories) {
+        return next(errorHandler(400, 'Please provide name & calorie info!'));
     }
 
     // if the logged-in user's id doesn't match with the id in the param,
@@ -65,7 +65,10 @@ export const addFood = async (req, res, next) => {
         // Adds the food info along with the userId
         const newFood = new Food({
             userId,
-            food,
+            food: {
+                name,
+                calories,
+            },
         });
         // Saves the information inside the DB
         await newFood.save();
@@ -106,8 +109,8 @@ export const updateFood = async (req, res, next) => {
             req.params.foodId, 
             {
                 $set: {
-                    'food.name': req.body.food.name,
-                    'food.calories': req.body.food.calories,
+                    'food.name': req.body.name,
+                    'food.calories': req.body.calories,
                 }
             }, 
             { new: true }

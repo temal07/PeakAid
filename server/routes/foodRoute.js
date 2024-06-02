@@ -4,7 +4,7 @@ import { addFood, getFood, updateFood, deleteFood } from "../controllers/foodCon
 
 const router = express.Router();
 
-router.get('/get-food/:userId', verifyUser, getFood);
+router.get('/get-food', verifyUser, getFood);
 router.post('/add-food/:userId', verifyUser, addFood);
 router.put('/update-food/:foodId/:userId', verifyUser, updateFood);
 router.delete('/delete-food/:foodId/:userId', verifyUser, deleteFood);

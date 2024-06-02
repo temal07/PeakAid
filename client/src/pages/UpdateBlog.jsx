@@ -38,6 +38,7 @@ export default function UpdateBlog() {
         }
         if (res.ok) {
           setPublishError(null);
+          console.log(data)
           setFormData(data.blogs[0]);
         }
       };

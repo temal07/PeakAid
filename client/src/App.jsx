@@ -16,6 +16,8 @@ import Profile from './pages/Profile';
 import ViewAIResponses from './pages/ViewAIResponses';
 import SingleBlog from './pages/SingleBlog';
 import UpdateBlog from './pages/UpdateBlog';
+import ViewAllFood from './components/ViewAllFood';
+import UpdateFood from './pages/UpdateFood';
 
 export default function App() {
   return (
@@ -29,6 +31,8 @@ export default function App() {
         <Route path='/nutritions' element={<Nutritions />}>
           <Route path='water/:id' element={<Water />} />
           <Route path='food/:id' element={<Food />} />
+          <Route path='view-all-food/:id' element={<ViewAllFood />} />
+          <Route path='update-food/:foodId' element={<UpdateFood />} />
         </Route>
         <Route path='/view-responses/:id' element={<ViewAIResponses />} />
         {/* For users all blogs */}
