@@ -5,38 +5,57 @@ import Water from "../models/waterModel.js";
 
 // the function gets the water data that is stored in MongoDB
 export const getWater = async (req, res, next) => {
-    // gets the user's id and assigns it to a new variable
-    // called userId
-    const userId = req.user.id;
-
-    // Checks if the userId (the user that's logged in) is 
-    // equal to the one in the parameters (see the related route for additional information)
-    if (userId !== req.params.userId) {
-        // If they're not equal, the server sends a 403 response
-        // and does not allow the logged in user to access the information
-        return next(errorHandler(
-            403, 
-            `You are not allowed to 
-            access this person's water
-            information...
-        `));
-    }
     // If they are equal, the server fetches the data through a try-catch block
     try {
-        // gets the water information of the user and assigns it to
-        // a variable called water
-        const water = await Water.find({ userId });
-        // Note: water variable comes in an array form
+        const startIndex = parseInt(req.query.startIndex) || 0;
+        const limit = parseInt(req.query.limit) || 9;
+        const sortDirection = req.query.order === 'asc' ? 1 : -1;
 
-        // checks if there's no data:
-        if (water.length === 0) {
-            return next(errorHandler(404, `No water info found.`));
+        // Build the query object
+        const query = {};
+
+        if (req.query.userId) {
+            query.userId = req.query.userId;
         }
-        // Logs the data for testing purposes: 
-        console.log(water);
 
-        // sends back the data in a JSON form with a 200 response (OK)
-        res.status(200).json(water);
+        if (req.query.waterId) {
+            query._id = req.query.waterId;
+        }
+
+        if (req.query.searchTerm) {
+            query.$or = [
+                { waterAmount: { $regex: req.query.searchTerm, $options: 'i' } },
+            ];
+        }
+
+        const waterAmounts = await Water.find(query)
+            .sort({ updatedAt: sortDirection })
+            .skip(startIndex)
+            .limit(limit);
+
+        const totalWater = await Water.countDocuments(query);
+
+        if (waterAmounts.length === 0 && !req.query.waterId) {
+            // If no water records found and no specific waterId provided, create default water info
+            const defaultWaterInfo = {
+                userId: req.query.userId,
+                waterAmount: 0,
+                maximumAmount: 20,
+                createdAt: new Date(),
+                updatedAt: new Date()
+            };
+
+            // Create default water info
+            const defaultWater = new Water(defaultWaterInfo);
+            await defaultWater.save();
+
+            waterAmounts = [defaultWaterInfo];
+            totalWater = 1;
+        }
+
+        console.log({ waterAmounts, totalWater });
+
+        res.status(200).json({ waterAmounts, totalWater });
     } catch (error) {
         // if an error occurs, provides the error in a more detailed way.
         next(errorHandler(error.statusCode, error.message));        
@@ -129,7 +148,7 @@ export const addWaterAmount = async (req, res, next) => {
     const userId = req.user.id;
 
     // Gets the water amount that should be added
-    let { waterAmount } = req.body;
+    const { waterAmount } = req.body;
     
     if (userId !== req.params.userId) {
         return next(errorHandler(403, "You are not allowed to update this person's water amount"))
