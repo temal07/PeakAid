@@ -9,6 +9,7 @@ import blogRoute from './routes/blogRoute.js';
 import foodRoute from './routes/foodRoute.js';
 import waterRoute from './routes/waterRoute.js';
 import activityRoute from './routes/activityRoute.js';
+import path from 'path'
 
 dotenv.config();
 
@@ -16,7 +17,9 @@ mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log('MongoDB is connected to the app...');
 }).catch((err) => {
     console.log(err);
-})
+});
+
+const __dirname = path.resolve();
 
 const app = express();
 
@@ -30,6 +33,11 @@ app.use('/api/blog', blogRoute);
 app.use('/api/water', waterRoute);
 app.use('/api/food', foodRoute);
 app.use('/api/activity', activityRoute);
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+});
 
 // create an error handler middleware
 // (the 'success' key is used in the frontend);
