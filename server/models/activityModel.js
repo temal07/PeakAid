@@ -6,8 +6,18 @@ const activitySchema = new mongoose.Schema({
             required: true,
         },
         activity: {
-            type: String,
-            required: true,
+            name: {
+                type: String, 
+                required: true,
+            },
+            caloriesBurnt : {
+                type: Number,
+                required: true,
+            }, 
+            category: {
+                type: String,
+                default: 'uncategorised',
+            },
         }, 
     },
     {

@@ -103,8 +103,8 @@ export default function Header() {
                   Nutritions
                 </Link>
             </Navbar.Link>
-            <Navbar.Link active={path ==="/activities"} as={'div'}>
-                <Link to='/activities'>
+            <Navbar.Link active={path ===`/activities/${currentUser._id}`} as={'div'}>
+                <Link to={`/activities/${currentUser._id}`}>
                   Activities
                 </Link>
             </Navbar.Link>

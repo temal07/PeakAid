@@ -40,7 +40,7 @@ export default function Profile() {
                         <Link to={`/nutritions/water/${currentUser._id}`} className='text-blue-500 pl-2'>See Water Info</Link>
                     </li>
                     <li className='text-xl whitespace-nowrap'>Food Information: 
-                        <Link to={`/nutritions/food/${currentUser._id}`} className='text-blue-500 pl-2'>See Food Info</Link>
+                        <Link to={`/nutritions/view-all-food/${currentUser._id}`} className='text-blue-500 pl-2'>See Food Info</Link>
                     </li>
                     <li className='text-xl whitespace-nowrap'>Activities Information: 
                         <Link to={`/activities/${currentUser._id}`} className='text-blue-500 pl-2'>See Activity Info</Link>

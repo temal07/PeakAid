@@ -18,6 +18,8 @@ import SingleBlog from './pages/SingleBlog';
 import UpdateBlog from './pages/UpdateBlog';
 import ViewAllFood from './components/ViewAllFood';
 import UpdateFood from './pages/UpdateFood';
+import ViewAllActivities from './components/ViewAllActivities';
+import UpdateActivity from './pages/UpdateActivity';
 
 export default function App() {
   return (
@@ -42,7 +44,9 @@ export default function App() {
         <Route path='/create-blog' element={<CreateBlog />} />
         <Route path='/update-blog/:blogId' element={<UpdateBlog />} />
         <Route path='/create-plan' element={<CreatePlan />} />
-        <Route path='/activities:id' element={<Activities />} />
+        <Route path='/activities/:id' element={<Activities />} />
+        <Route path='/view-all-activities/:id' element={<ViewAllActivities />} />
+        <Route path='/update-activity/:id' element={<UpdateActivity />} />
       </Routes>
       <Footer />
     </BrowserRouter>
