@@ -15,7 +15,8 @@ export default function About() {
               Welcome to Peakaid. Peakaid is an online health website, where you
               can store your information regarding your health. 
               The information includes Water, Food and Exercise. Not only that, you can 
-              also read and write blogs to shape your health information.
+              also read and write blogs to shape your health information and access Google's
+              Gemini for advice.
             </p>
             <p>
               Peakaid was created for ensuring health and well being for all at all ages.
