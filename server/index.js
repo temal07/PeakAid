@@ -40,7 +40,7 @@ app.use('/api/activity', activityRoute);
 app.use(express.static(path.join(__dirname, '/client/dist')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'client', 'dist', 'index.html'));
+  res.sendFile(path.join(process.cwd(), 'client', 'index.html'));
 });
 
 // create an error handler middleware
