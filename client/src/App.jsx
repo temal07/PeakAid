@@ -46,7 +46,7 @@ export default function App() {
         <Route path='/create-plan' element={<CreatePlan />} />
         <Route path='/activities/:id' element={<Activities />} />
         <Route path='/view-all-activities/:id' element={<ViewAllActivities />} />
-        <Route path='/update-activity/:id' element={<UpdateActivity />} />
+        <Route path='/update-activity/:activityId' element={<UpdateActivity />} />
       </Routes>
       <Footer />
     </BrowserRouter>

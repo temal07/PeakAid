@@ -90,9 +90,9 @@ export default function Activities() {
             </Button>
           </div>
         </form>
-        <div className='mb-20'>
-          <Link to={`/view-all-activities/${currentUser._id}`}>
-          
+        <div className='flex justify-center mt-10'>
+          <Link to={`/view-all-activities/${currentUser._id}`} className='text-blue-500'>
+              See Your activity Info:
           </Link>
         </div>
     </div>

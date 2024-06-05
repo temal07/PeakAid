@@ -108,9 +108,9 @@ export const updateActivity = async (req, res, next) => {
             req.params.activityId, 
             {
                 $set: {
-                    'name': req.body.name,
-                    'caloriesBurnt': req.body.caloriesBurnt,
-                    'category': req.body.category,
+                    'activity.name': req.body.name,
+                    'activity.caloriesBurnt': req.body.caloriesBurnt,
+                    'activity.category': req.body.category,
                 }
             }, 
             { new: true }
