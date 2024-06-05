@@ -23,6 +23,10 @@ const __dirname = path.resolve();
 
 const app = express();
 
+app.listen(3000, () => {
+    console.log('Server is up and listening on port 3000...');
+    console.log(__dirname)
+});
 // routes and middlewares
 app.use(express.json());
 app.use(cookieParser());
@@ -36,7 +40,7 @@ app.use('/api/activity', activityRoute);
 app.use(express.static(path.join(__dirname, '/client/dist')));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
 });
 
 // create an error handler middleware
@@ -51,7 +55,3 @@ app.use((err, req, res, next) => {
     }) 
 });
 
-app.listen(3000, () => {
-    console.log('Server is up and listening on port 3000...');
-    console.log(__dirname)
-});
