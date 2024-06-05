@@ -20,6 +20,7 @@ import ViewAllFood from './components/ViewAllFood';
 import UpdateFood from './pages/UpdateFood';
 import ViewAllActivities from './components/ViewAllActivities';
 import UpdateActivity from './pages/UpdateActivity';
+import About from './pages/About';
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
         <Route path='/' element={<Home />} />
         <Route path='/sign-in' element={<SignIn/>} />
         <Route path='/sign-up' element={<SignUp />} />
+        <Route path='/about' element={<About />} />
         <Route path='/profile/:id' element={<Profile />} />
         <Route path='/nutritions' element={<Nutritions />}>
           <Route path='water/:id' element={<Water />} />

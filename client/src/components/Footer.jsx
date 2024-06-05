@@ -19,7 +19,7 @@ export default function FooterComp() {
                         <Footer.Title title='About'  className='mt-4'/>
                         <Footer.LinkGroup col>
                             <Footer.Link 
-                                href='#'
+                                href='/about'
                                 rel='noopener noreferrer'
                             >
                                 About the Project
