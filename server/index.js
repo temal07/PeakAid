@@ -41,10 +41,10 @@ app.use('/api/water', waterRoute);
 app.use('/api/food', foodRoute);
 app.use('/api/activity', activityRoute);
 
-app.use(express.static(path.join(__dirname, '/client/build')));
+app.use(express.static(path.join(__dirname, '/client/dist')));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
 });
 
 // create an error handler middleware
