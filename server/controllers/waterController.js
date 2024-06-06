@@ -38,8 +38,8 @@ export const getWater = async (req, res, next) => {
         if (waterAmounts.length === 0 && !req.query.waterId) {
             // If no water records found and no specific waterId provided, create default water info
             const defaultWaterInfo = {
-                userId: req.query.userId,
-                waterAmount: 0,
+                userId: req.user.id,
+                waterAmount: 1,
                 maximumAmount: 20,
                 createdAt: new Date(),
                 updatedAt: new Date()

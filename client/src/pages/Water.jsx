@@ -8,7 +8,7 @@ export default function Water() {
   // the frontend
 
   // A form data for sending the water amount to the backend
-  const [waterData, setWaterData] = useState({});
+  const [waterData, setWaterData] = useState([]);
   // State for most recent water id
   const [waterId, setWaterId] = useState(null);
   // Sets the previous water amounts
@@ -51,6 +51,31 @@ export default function Water() {
 
   // These functions are updating the most recent water information (the 
   //  most up-to-date)
+  const handleAddAmount = async () => {
+    const increment = 1;
+    // Sends a POST request to the backend
+    if (waterData.waterAmount + increment > waterData.maximumAmount) {
+      setError('Water amount is at its maximum and cannot be further incremented');
+      return;
+    }
+
+    try {
+      const res = await fetch(`/api/water/add-water-amount/${waterId}/${currentUser._id}`, {
+        method: "PUT",
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({waterAmount: increment}),
+      });
+      const data = await res.json();
+      
+      // Logs the data if the response is OK.
+      if (res.ok) {
+        console.log(data);
+        setWaterData((prevData) => ({ ...prevData, waterAmount: prevData.waterAmount + increment }));
+      }
+    } catch (error) {
+      console.log(error);      
+    }
+  }
 
   const handleDeleteAmount = async () => {
     const decrement = 1;
@@ -80,31 +105,6 @@ export default function Water() {
   }
 
   
-  const handleAddAmount = async () => {
-    const increment = 1;
-    // Sends a POST request to the backend
-    if (waterData.waterAmount + increment > waterData.maximumAmount) {
-      setError('Water amount is at its maximum and cannot be further incremented');
-      return;
-    }
-
-    try {
-      const res = await fetch(`/api/water/add-water-amount/${waterId}/${currentUser._id}`, {
-        method: "PUT",
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({waterAmount: increment}),
-      });
-      const data = await res.json();
-      
-      // Logs the data if the response is OK.
-      if (res.ok) {
-        console.log(data);
-        setWaterData((prevData) => ({ ...prevData, waterAmount: prevData.waterAmount + increment }));
-      }
-    } catch (error) {
-      console.log(error);      
-    }
-  }
 
   const handleDeleteWater = async (waterId) => {
     try {
