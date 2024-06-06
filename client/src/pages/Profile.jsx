@@ -7,7 +7,7 @@ export default function Profile() {
     const { currentUser } = useSelector(state => state.user); 
 
   return (
-    <div className='flex flex-col sm:justify-center items-center md:flex-row gap-20 my-10'>
+    <div className='flex flex-col justify-center items-center md:flex-row gap-20 my-10'>
         {/* User profile Pciture */}        
         <div className="">
             <div className=''>

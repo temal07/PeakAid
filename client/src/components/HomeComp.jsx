@@ -49,7 +49,7 @@ export default function HomeComp({ blogs }) {
                   <h2 className='text-2xl font-semibold text-left'>Recent Blogs</h2>
                   <p className='text-xl'>Here are some starting blogs that can keep you engaged:</p>
                 </div>
-                <div className='flex flex-row sm:flex-wrap gap-4 justify-center'>
+                <div className='flex flex-col md:flex-row gap-4 justify-center'>
                   {
                     blogs.map((blog) => (
                       <BlogCard key={blog.id} blog={blog} />
